@@ -1,0 +1,60 @@
+---
+layout: post
+title: SQLite：AUTOINCREMENTの現在値を取得
+categories:
+- android
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  tagazine-media: a:7:{s:7:"primary";s:65:"http://japanesegeek.files.wordpress.com/2013/01/autoincrement.png";s:6:"images";a:1:{s:65:"http://japanesegeek.files.wordpress.com/2013/01/autoincrement.png";a:6:{s:8:"file_url";s:65:"http://japanesegeek.files.wordpress.com/2013/01/autoincrement.png";s:5:"width";i:509;s:6:"height";i:233;s:4:"type";s:5:"image";s:4:"area";i:118597;s:9:"file_path";b:0;}}s:6:"videos";a:0:{}s:11:"image_count";i:1;s:6:"author";s:8:"42560238";s:7:"blog_id";s:8:"43147825";s:9:"mod_stamp";s:19:"2013-01-11
+    02:04:54";}
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://japanesegeek.files.wordpress.com/2013/01/autoincrement.png"><img class="size-medium wp-image-1918 aligncenter" alt="autoincrement" src="http://japanesegeek.files.wordpress.com/2013/01/autoincrement.png?w=300" width="300" height="137" /></a></p>
+<p>SQLiteはPostgresqlと違って、【currval】または【nextval】のようなメッソードが用意されてないため、オートインクリメントの現在値や次値を取得したい場合は、自分で実装しなければなりません。</p>
+<p><em>事前にSQLiteのオートインクリメント仕組みを知っておきましょう！</em></p>
+<ol>
+<li>autoincrement情報は【SQLITE_SEQUENCE】に保存されている</li>
+<li>【SQLITE_SEQUENCE】の必要なカラム名：　name（対象テーブル名）+　seq（現在値）</li>
+<li>同じテーブル内に一つのオートインクリメントしか宣言できない</li>
+</ol>
+<p>下記メッソードで簡単に現在値を取得できます：</p>
+<pre>public void printAutoIncrements(){
+
+    //DBの全てAUTOINCREMENTを取得
+    String query = "SELECT * FROM SQLITE_SEQUENCE";
+
+　　//対処autoincrementの指定
+    String myAutoIncrementTableName= "myTable";
+
+　　//Cursorでループ
+    Cursor cursor = mDb.rawQuery(query, null);
+    if (cursor.moveToFirst()){
+
+        do{
+            String curTable= cursor.getString(cursor.getColumnIndex("name")));
+	    String curId= cursor.getString(cursor.getColumnIndex("seq")));
+
+	//指定されたテーブルでしたら、値を出力
+	if(curTable.equals(myAutoIncrementTableName)){
+		Debug.d("DEBUG", "現在値="+curId);
+		break;
+	}
+
+        }while (cursor.moveToNext());
+    }
+
+    cursor.close(); 
+
+}</pre>
+<p>以上</p>
+<p>by Johann</p>

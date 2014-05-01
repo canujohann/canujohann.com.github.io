@@ -1,0 +1,171 @@
+---
+layout: post
+title: capistrano+apache+unicorn
+categories:
+- rails
+tags:
+- apache
+- capistrano
+- rails
+- unicorn
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _su_description: ''
+  _oembed_051d3d8ce6f4066d8a9fc96371fda2f2: '{{unknown}}'
+  _syntaxhighlighter_encoded: '1'
+  _edit_last: '1'
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><img class="aligncenter" alt="unicorn" src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQeL70bOmm9nzbeWixuPbQJ2i0Yul6JSJF4lDAH1y21wDPZB4tZ9g" width="160" height="164" /></p>
+<p><span style="font-style: inherit; line-height: 1.625;">Railsプロジェクトをデプロイする時に山ほどのエラーが発生することが先週初めて知りました・・</span><span style="font-style: inherit; line-height: 1.625;">・デプロイタスクを自動化しようと思い、capistranoを使ってみました。このツールを使いこなせると、あっという間にstaggingやproductionサーバーのデプロイが可能になりますので、設定手順を作ってみました。</span></p>
+<p>まずはローカル環境でcapistranoをインストールします<br />
+[html]gem install capistrano capistrano_colors capistrano-ext rvm-capistrano[/html]</p>
+<p>capistranoの他に幾つかのgemをインストールしました。</p>
+<ol>
+<li><strong>capistrano_colors</strong>　実行結果に色を付けれてくれる便利なgemです</li>
+<li><strong>capistrano-ext</strong>　環境に応じて、設定を変えられるツールです</li>
+<li><strong>rvm-capistrano</strong>　rvm経由でのインストール</li>
+</ol>
+<p>Gemfileを更新します</p>
+<p>[python]#デプロイする際にcapistranoをインストール<br />
+group :deployment do<br />
+  gem 'capistrano'<br />
+  gem 'capistrano_colors'<br />
+  gem 'capistrano-ext'<br />
+  gem 'rvm-capistrano'<br />
+end<br />
+...[/python]</p>
+<p><em><em>#プロダクションモードの場合(本番機)、unicornをインストール</em> group :production do gem 'unicorn' end ...</em><br />
+Gemfileの設定が完了になりました！次はcapistranoの設定を行います。【cap】コマンドでcapistranoの必要なファイルを生成します：</p>
+<p>[html]<br />
+$cd {project_path}<br />
+$capify .</p>
+<p>[/html]</p>
+<p>capify コマンドによって、デフォルトで次のファイルが生成されたはずです。</p>
+<ul>
+<li>Capfile</li>
+<li>config/deploy.rb</li>
+</ul>
+<p>【deploy.rb】を書き直します：</p>
+<p>[python]<br />
+#multi-stages用<br />
+require &quot;capistrano/ext/multistage&quot;</p>
+<p># 結果に色を作れくれるツール<br />
+require &quot;capistrano_colors&quot;</p>
+<p>require &quot;bundler/capistrano&quot;</p>
+<p># RVMでrubyを管理していれば　↓<br />
+require &quot;rvm/capistrano&quot;</p>
+<p># 値をセット<br />
+set :rvm_ruby_string, &quot;ruby-2.0.0-p0&quot;<br />
+set :application, &quot;myapp&quot;<br />
+set :copy_exclude, %w(.git .gitignore doc features log spec test tmp Capfile)<br />
+#set :shared_children, shared_children + %w(public/uploads)<br />
+set :use_sudo, false<br />
+set :user, &quot;app&quot;<br />
+set :stages, %w(staging production)</p>
+<p># unicornサーバーを管理するためにdeploy namespaceを用意<br />
+# start/stop/restartメッソード<br />
+namespace :deploy do<br />
+  task :start, roles: :app, except: { no_release: true } do<br />
+    run &quot;cd #{current_path} &amp;&amp; bundle exec unicorn_rails -c config/unicorn.rb -E #{rails_env} -D&quot;<br />
+  end</p>
+<p>  task :stop, roles: :app, except: { no_release: true } do<br />
+    run &quot;kill -KILL -s QUIT `cat #{shared_path}/pids/unicorn.pid`&quot;<br />
+  end</p>
+<p>  task :restart, roles: :app, except: { no_release: true } do<br />
+    stop<br />
+    start<br />
+  end<br />
+end</p>
+<p>#デプロイ前に確認画面を出す<br />
+def confirm<br />
+  puts &quot;ne[0;36m#{stage}e[0me[0;31m Do you really deploy? (yes/no) e[0mn&quot;<br />
+  proceed = STDIN.gets rescue nil<br />
+  exit unless proceed.chomp! == &quot;yes&quot;<br />
+end<br />
+[/python]</p>
+<p>本来はcapistranoの呼び方はこんな感じになります：</p>
+<p>[html]<br />
+cap namespace1:task1  namespace1:task2 tasks3<br />
+[/html]</p>
+<p>今回はcapistranoのmultistageを使うことにしますので、コマンドが変わってきます。</p>
+<p>[html]<br />
+cap stage namespace1:task1  namespace1:task2 tasks3<br />
+[/html]</p>
+<p>設定ファイルで定義した通りに2つのstageを用意しておきます：</p>
+<ol>
+<li>stagging (テスト用)</li>
+<li>production（本番）</li>
+</ol>
+<p>capistranoは指定されたstagesの設定ファイルを自動的に読み取ってくれる。この設定ファイルの保存場所は　→　config/deploy/{stage名}.rb</p>
+<p>ということで、stagging.rbとproduction.rbを追加しましょう！</p>
+<p>[ruby]<br />
+#production.rb</p>
+<p>server &quot;myRealServer&quot;, :app, :web, :db, primary: true<br />
+set :rails_env, &quot;production&quot;<br />
+set :rvm_type, :user<br />
+set :scm, :subversion<br />
+set :scm_username, &quot;myUser&quot;<br />
+set :scm_password, &quot;xxxxx&quot;<br />
+set :repository, &quot;https://myrepository/svn/myproject/trunk&quot;</p>
+<p>#確認メッソードを呼び出す<br />
+confirm</p>
+<p>#stagging.rb<br />
+server &quot;myproject.com&quot;, :app, :web, :db, primary: true<br />
+set :rails_env, &quot;staging&quot;<br />
+set :rvm_type, :system<br />
+set :rvm_path, &quot;/usr/local/rvm&quot;<br />
+set :scm, :git<br />
+set :repository,  &quot;ssh://git@gitlab.test.com:10022/myProject.git&quot;<br />
+set :deploy_via, :remote_cache<br />
+[/ruby]</p>
+<p>ご覧のとおり、stageによってscm(バージョン管理ツール)やサーバーが違います。</p>
+<p>最後はサーバー側の修正を行います。必要なライブラリーをインストールし、unicorn用のユーザーアカウントを追加します</p>
+<p>[html]<br />
+### 必要なライブラリのインストール (rootにてコマンド実行)<br />
+$ yum install libxslt-devel</p>
+<p>### app ユーザ作成 (rootにてコマンド実行)<br />
+# adduser app<br />
+# mkdir -p /u/apps<br />
+# chown app:app /u/apps<br />
+rvm経由でRubyのインストールを行う：<br />
+### ruby2.0.0-p0 インストール (appユーザにてコマンド実行)</p>
+<p>$ rvm install 2.0.0-p0<br />
+$ rvm reload<br />
+$ rvm use 2.0.0-p0 --default<br />
+$ echo 'gem: --no-ri --no-rdoc' &gt;&gt; ~/.gemrc<br />
+$ echo ':ssl_verify_mode: 0' &gt;&gt; ~/.gemrc<br />
+$ gem install bundler<br />
+[/html]</p>
+<p>最後はapacheのVirtualHostを設定します：</p>
+<p>[html]<br />
+### apache 設定</p>
+<p>    ServerName special.myserver.jp</p>
+<p>    ProxyPass /assets/ !<br />
+    ProxyPass / http://localhost:18080/<br />
+    ProxyPassReverse / http://localhost:18080/</p>
+<p>    Alias /assets/ /u/apps/myProject/current/public/assets/</p>
+<p>        Options FollowSymLinks<br />
+        Order Allow,Deny<br />
+        Allow from All<br />
+[/html]</p>
+<p>実際にプロジェクトをデプロイしてみましょう！</p>
+<p>[html]<br />
+#capistranoの動作確認(初回のみ)<br />
+cap production deploy:check</p>
+<p># 最初の環境構築 (初回のみ)<br />
+cap production deploy:setup</p>
+<p>#デプロイ<br />
+cap production deploy</p>
+<p>#自分で作ったunicornのインストール・起動タスク<br />
+cap production deploy:start<br />
+[/html]</p>
+<p>http://special.server.comをアクセスすると、問題なくアプリが起動する・・はずです。</p>

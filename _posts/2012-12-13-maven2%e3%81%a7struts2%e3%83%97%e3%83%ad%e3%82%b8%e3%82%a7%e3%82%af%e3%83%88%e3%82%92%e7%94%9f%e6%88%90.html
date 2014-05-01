@@ -1,0 +1,53 @@
+---
+layout: post
+title: maven2でStruts2プロジェクトを生成
+categories:
+- Java
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _edit_last: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>maven2はANTみたいなビルド・プロセスツールです。maven2を利用して、struts2プロジェクトを生成してみましょう！</p>
+<p>①Maven2をダウンロード<br />
+<a title="maven2" href="http://maven.apache.org/download.html">http://maven.apache.org/download.html</a></p>
+<p>②maven2をセット（windows環境）</p>
+<pre>set PATH=%PATH%; C:path_to_mavenbin</pre>
+<p>③maven2設定確認</p>
+<pre>check mvn -v
+
+Apache Maven 2.2.1 (r801777; 2009-08-07 04:16:01+0900)
+Java version: 1.7.0_02
+Java home: C:Program FilesJavajdk1.7.0_02jre
+Default locale: ja_JP, platform encoding: MS932
+OS name: "windows 7" version: "6.1" arch: "x86" Family: "windows"
+C:workspacejavastruts2testtestProject&gt;</pre>
+<p><strong><strong>↓　</strong>"JAVA_HOME is set to an invalid directory” 　↓</strong></p>
+<p>こういったエラーが出力されたら、java_homeの設定を行いましょう！<br />
+→　<a title="java_home設定" href="http://www.javadrive.jp/install/jdk/index4.html" target="_blank">http://www.javadrive.jp/install/jdk/index4.html</a></p>
+<p>④struts2プロジェクト作成</p>
+<pre>mvn archetype:generate -B -DgroupId=com.struts.test -DartifactId=testProject -DarchetypeGroupId=org.apache.struts -DarchetypeArtifactId=struts2-archetype-blank -DarchetypeVersion=2.2.1</pre>
+<p>上記コマンドを実行すると、プロジェクトの構成はこんな感じになります。</p>
+<p><a href="http://japanesegeek.wordpress.com/2012/12/13/maven2%e3%81%a7struts2%e3%83%97%e3%83%ad%e3%82%b8%e3%82%a7%e3%82%af%e3%83%88%e3%82%92%e7%94%9f%e6%88%90/struts2/" rel="attachment wp-att-1861"><img class="alignnone size-medium wp-image-1861" alt="struts2" src="http://japanesegeek.files.wordpress.com/2012/12/struts2.png?w=300" width="300" height="251" /></a></p>
+<p>⑤eclipse化</p>
+<pre>cd .../project_root
+mvn eclipse:eclipse -Dwtpversion=1.5</pre>
+<p>⑥eclipseインポート</p>
+<p>【ファイル】→【インポート】</p>
+<p>⑥搭載servletサーバーで実行</p>
+<pre>mvn jetty:run</pre>
+<p>⑦ブラウザーで確認</p>
+<p><a title="index page test" href="http://127.0.0.1:8080/testProject/index.html">http://127.0.0.1:8080/testProject/index.html</a></p>
+<p>以上・・</p>
+<p>ビルドツールを使うことによって、フォルダー生成や依存ファイルのインポートなどの自動化を簡単にできますが、設定ファイルがまだまだ多すぎる気がしますね・・・やっぱりPlay Frameworkがいいですね。</p>
+<p>by johann</p>

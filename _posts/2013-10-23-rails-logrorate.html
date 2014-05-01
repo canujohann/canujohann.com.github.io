@@ -1,0 +1,47 @@
+---
+layout: post
+title: Rails + Logrotate
+categories:
+- rails
+tags:
+- logrotation
+- rails
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+  _su_title: rails logrotate
+  _su_description: railsアプリ　rogrotate ログロテーション
+  _su_rich_snippet_type: none
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>ご存じの通り、railsアプリの<strong>ログファイル</strong>は下記ディレクトリーに保存されます。</p>
+<p>[html]</p>
+<p>/path/to/appli/log/production.log<br />
+/path/to/appli/log/stagging.log<br />
+...</p>
+<p>[/html]</p>
+<p>多くのアクセスの場合は<strong>あっという間にファイルが大きくなり</strong>、気が付いたら何万行が記載されました・・・</p>
+<p>効率が悪いので<strong>rogrotateにログファイルを追加しましょう</strong>。<br />
+（ほとんとのdistributionは初期状態でインストールされている）</p>
+<p>[html]</p>
+<p>vi etc/logrotate.d/rails_appli</p>
+<p>/path/appli/log/*.log {<br />
+ weekly<br />
+ missingok<br />
+ rotate 52<br />
+ compress<br />
+ delaycompress<br />
+ notifempty<br />
+ copytruncate<br />
+}</p>
+<p>[/html]</p>
+<p>これで<strong>一週間間隔</strong>で新しいログファイルが生成され、<strong>一年間分のログ</strong>が保管されます。対象となるファイルは【/path/appli/log/】下の <strong>.log拡張子ファイル</strong>です。</p>
+<p>以上！</p>

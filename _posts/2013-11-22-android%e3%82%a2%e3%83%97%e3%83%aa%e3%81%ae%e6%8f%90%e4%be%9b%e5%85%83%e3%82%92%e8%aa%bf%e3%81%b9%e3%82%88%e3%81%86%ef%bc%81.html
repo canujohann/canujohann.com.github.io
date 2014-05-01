@@ -1,0 +1,39 @@
+---
+layout: post
+title: androidアプリの提供元を調べよう！
+categories:
+- android
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _syntaxhighlighter_encoded: '1'
+  _edit_last: '1'
+  _su_title: androidアプリの提供元を調べよう！
+  _su_description: android アプリ提供元
+  _su_rich_snippet_type: none
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>androidアプリの提供元を調べるために、PackageManagerのgetInstallerPackageNameを使えます</p>
+<p>[java]<br />
+PackageManager pm = getPackageManager();<br />
+String installationSource = pm.getInstallerPackageName(getPackageName());</p>
+<p>String source ;</p>
+<p>if(installationSource.equals(&quot;com.android.vending&quot;)){<br />
+ source= &quot;google play&quot;;<br />
+}else if(installationSource.equals(&quot;com.amazon.venezia&quot;)){<br />
+ source= &quot;amazon market&quot;;<br />
+}else{<br />
+ source= &quot;その他のマーケット&quot;;<br />
+}</p>
+<p>Log.d(&quot;DEBUG&quot;, source + &quot;からインストールされましたね。&quot;);<br />
+[/java]</p>
+<p>installationSourceの値は【com.android.vending】でしたら、google playからインストールされたってことです！</p>
+<p>以上！</p>
+<p>参考：<a title="androidの提供先を調べる" href="http://stackoverflow.com/questions/3178043/is-there-a-way-to-detect-if-app-was-installed-with-market-or-not" target="_blank">stackoverflow</a></p>

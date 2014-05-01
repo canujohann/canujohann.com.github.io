@@ -1,0 +1,39 @@
+---
+layout: post
+title: Railsプロジェクトで Twitter Bootstrap
+categories: []
+tags:
+- bootstrap
+- less
+- rails
+- saas
+- scss
+status: publish
+type: post
+published: true
+meta:
+  _syntaxhighlighter_encoded: '1'
+  _su_title: bootstrap saas, scss
+  _su_rich_snippet_type: none
+  _su_description: bootstrapの【Sass】バージョンの導入方法
+  _edit_last: '1'
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a title="bootstrap" href="http://getbootstrap.com/2.3.2/" target="_blank">bootstrap</a>はLESSメタ言語で書かれてたフロントエンドフレームワークなので、そのままRoRプロジェクトに入れてしまうと、Less+Sassが共存し、管理はかなりめんどくさいです！　今日は<strong>bootstrapの【Sass】バージョン</strong>の（一つの）<strong>導入方法</strong>を紹介したいと思います～</p>
+<p>まずはgemfileを更新しましょう</p>
+<p>[html]gem 'sass-rails', '&gt;= 3.2'<br />
+gem 'bootstrap-sass', '~&gt; 2.3.2.2'[/html]</p>
+<p>んでgemFileを更新<br />
+[html]bundle install[/html]</p>
+<p>この時点でファイルがまだロードされていません！自動で生成されるapplication.css.scssに追加しましょう</p>
+<p>[css]@import &quot;bootstrap&quot;;<br />
+@import &quot;bootstrap-responsive&quot;;[/css]</p>
+<p>注意点： <em>requireを使うと他のCSSシートからbootstrapを参照できるないしいから、必ずimportでやってください。</em></p>
+<p>完了です！bootstrapを使えます！</p>
+<p>参考：<a title="https://github.com/thomas-mcdonald/bootstrap-sass" href="https://github.com/thomas-mcdonald/bootstrap-sass" target="_blank">https://github.com/thomas-mcdonald/bootstrap-sass</a></p>
+<p>役に立ったかな・・・</p>

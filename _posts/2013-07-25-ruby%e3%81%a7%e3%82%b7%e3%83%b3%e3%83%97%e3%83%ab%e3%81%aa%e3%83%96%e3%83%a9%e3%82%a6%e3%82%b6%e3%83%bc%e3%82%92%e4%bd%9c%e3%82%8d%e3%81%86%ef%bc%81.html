@@ -1,0 +1,47 @@
+---
+layout: post
+title: rubyでシンプルなブラウザーを作ろう！
+categories:
+- Ruby
+tags:
+- ruby
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+  _su_rich_snippet_type: none
+  _su_title: rubyで簡単なブラウザーを作りましょう！
+  _wp_old_slug: ruby%e3%81%a7
+  _su_description: 自家ブラウザー作成　ruby
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://blog.canujohann.com/wp-content/uploads/2013/07/images.jpg"><img class="size-full wp-image-2085 aligncenter" alt="images" src="http://blog.canujohann.com/wp-content/uploads/2013/07/images.jpg" width="204" height="204" /></a></p>
+<p>今日、rubysの<strong>ソケット</strong>(socket)ライブラリーを使って、<strong>シンプルなブラウザーを作ってみましょう</strong>。</p>
+<p>ライブラリーをインポートし、アクセスするサーバーの値をインスタンスに代入</p>
+<p>[ruby]</p>
+<p>require 'socket'</p>
+<p>host = 'canujohann.com' # ウエブサーバー<br />
+port = 80 # サーバーのポート<br />
+path = &quot;/index.html&quot; # アクセスするページ</p>
+<p>[/ruby]</p>
+<p>リクエストの設定:</p>
+<p>[ruby]</p>
+<p>#HTTPリクエスト<br />
+request = &quot;GET #{path} HTTP/1.0\r\n\r\n&quot;</p>
+<p>[/ruby]</p>
+<p>実際に接続して、結果をプリントします。</p>
+<p>[ruby]</p>
+<p>socket = TCPSocket.open(host,port) # サーバー接続<br />
+socket.print(request) # 情報送信<br />
+response = socket.read # レスポンスの読み取り<br />
+headers,body = response.split(&quot;\r\n\r\n&quot;, 2) #body+headeを取得<br />
+print body # bodyを表示</p>
+<p>[/ruby]</p>
+<p>以上！</p>

@@ -1,0 +1,73 @@
+---
+layout: post
+title: MAC環境でlaravelアプリを構築
+categories:
+- PHP
+tags:
+- laravel
+- mac
+- php
+- デプロイ
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _su_rich_snippet_type: none
+  _su_title: MAC環境でlaravelアプリを構築
+  _su_description: MAC環境でlaravelアプリを構築しましょう
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://blog.canujohann.com/wp-content/uploads/2014/04/laravel-l-slant.png"><img class="size-medium wp-image-2163 aligncenter" alt="laravel-l-slant" src="http://blog.canujohann.com/wp-content/uploads/2014/04/laravel-l-slant-300x205.png" width="300" height="205" /></a></p>
+<p>環境を統一させようと思い、php・apache・mcrypt等をbrewでインストールします。</p>
+<ul>
+<li>portのアンインストール</li>
+</ul>
+<p>portとbrewの相性が悪くて、portをアンインストールしないとmcryptのインストールがややこしくなるので今回はportを削除することにしました。</p>
+<pre>sudo port -fp uninstall installed
+
+sudo rm -rf \
+
+    /opt/local \
+    /Applications/DarwinPorts \
+    /Applications/MacPorts \
+    /Library/LaunchDaemons/org.macports.* \
+    /Library/Receipts/DarwinPorts*.pkg \
+    /Library/Receipts/MacPorts*.pkg \
+    /Library/StartupItems/DarwinPortsStartup \
+    /Library/Tcl/darwinports1.0 \
+    /Library/Tcl/macports1.0 \
+    ~/.macports</pre>
+<ul>
+<li>apacheのインストール</li>
+</ul>
+<p>OSのデフォルトのapacheは管理しくいので、brewでインストールします</p>
+<pre>brew tap homebrew/dupes
+brew install httpd</pre>
+<blockquote><p>設定ファイルは/usr/local/etc/apache2/conf下になります</p></blockquote>
+<ul>
+<li>PHP+mcryptのインストール</li>
+</ul>
+<pre>brew install php55
+brew install mcrypt php55-mcrypt
+
+echo 'export PATH=$(brew --prefix)/bin:$PATH' &gt;&gt; ~/.bashrc
+source ~/.bashrc</pre>
+<ul>
+<li>composerのインストール</li>
+</ul>
+<pre>brew install josegonzalez/php/composer</pre>
+<ul>
+<li>プロジェクト作成</li>
+</ul>
+<p>ワークスペースまで移動し、新規プロジェクトを作成します。</p>
+<pre>cd /User/xxxx/workspace/php
+composer create-project laravel/laravel test
+cd test</pre>
+<p>artisanでserveしてみます：</p>
+<pre>php artisan serve</pre>

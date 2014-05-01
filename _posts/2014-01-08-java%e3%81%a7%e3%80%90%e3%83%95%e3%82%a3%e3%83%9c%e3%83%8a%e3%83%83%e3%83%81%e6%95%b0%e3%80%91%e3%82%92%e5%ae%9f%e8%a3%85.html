@@ -1,0 +1,43 @@
+---
+layout: post
+title: Javaで【フィボナッチ数】を実装
+categories:
+- Java
+tags:
+- java
+- recursive
+- フィボナッチ数
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+  _su_title: フィボナッチ数
+  _su_description: 'java : フィボナッチ数の実装　（recursive）'
+  _su_rich_snippet_type: none
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>javaで【フィボナッチ数】を実装してみました。0からnまでループを回すと簡単にできますが、recursiveメッソードでやってみましょう！</p>
+<p>[java]</p>
+<p>public static Long fibonacci (int i){<br />
+if (i==0 || i==1) return (long)i;<br />
+return fibonacci(i-1) + fibonacci (i-2) ;<br />
+ }</p>
+<p>[/java]</p>
+<p>問題ないですが・・・数字が大きければ、処理スピードが遅くなりますので、HashMapを追加しました。</p>
+<p>[java]</p>
+<p>public static HashMap&lt;Integer,Long&gt; val = new HashMap&lt;Integer,Long&gt;();</p>
+<p>public static Long fibonacci (int i){<br />
+if (i==0 || i==1) return (long)i;<br />
+     if (val.get(i) != null) return val.get(i);<br />
+     val.put(i,fibonacci(i-1) + fibonacci (i-2));<br />
+     return val.get(i);<br />
+ }</p>
+<p>[/java]</p>
+<p>以上！</pre>

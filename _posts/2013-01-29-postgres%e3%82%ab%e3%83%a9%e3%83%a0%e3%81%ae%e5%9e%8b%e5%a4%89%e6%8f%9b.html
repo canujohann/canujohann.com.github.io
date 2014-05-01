@@ -1,0 +1,64 @@
+---
+layout: post
+title: POSTGRES:カラムの型変換
+categories:
+- Databases
+- Postgresql
+tags:
+- column type
+- postgresql
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://japanesegeek.files.wordpress.com/2013/01/images-1.jpg"><img class="size-full wp-image-1974 aligncenter" alt="images (1)" src="http://japanesegeek.files.wordpress.com/2013/01/images-1.jpg" width="259" height="194" /></a></p>
+<p><a title="postgresql公式サイト" href="http://www.postgresql.jp/document/8.4/html/ddl-alter.html" target="_blank">POSTGRES公式サイト</a>を参照にテーブルのカラムの型を変更してみました。</p>
+<pre>現状のテーブル構成
+ID(serial)	category(character varying)
+1		10
+2		12
+3		3
+
+変更後のテーブル構成
+ID(serial)	category(integer)
+1		10
+2		12
+3		3</pre>
+<p>正しいやり方：</p>
+<pre>alter table t1 alter column category type integer;</pre>
+<p>すると、下記エラーメッセージが出力されます。</p>
+<pre>ERROR:  列"category"を型"integer"にキャストできません
+
+********** エラー **********
+
+ERROR: 列"category"を型"integer"にキャストできません
+SQLステート:42804</pre>
+<p>キャストできないようですでの、別のやり方でやってみましょう</p>
+<pre>--仮カラムを作成
+alter table t1 add column new_category integer;
+
+--仮カラムにキャストされたcategory値を挿入
+update t1 set new_category = cast(category as integer);
+
+--元のcategoryカラムを削除
+alter table t1 drop column category;
+
+--新しくカラムを作成
+alter table t1 add column category integer;
+
+--仮カラムの値を挿入
+update t1 set category = new_category;
+
+--仮カラムを削除
+alter table t1 drop column new_category;</pre>
+<p>うまく型変換できました！・・・・以上 ！</p>
+<p>by johann</p>

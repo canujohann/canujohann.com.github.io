@@ -1,0 +1,61 @@
+---
+layout: post
+title: CAKEPHP:エラー・例外発生時メール送信
+categories:
+- PHP
+tags:
+- cakephp
+- エラー
+- 例外
+status: publish
+type: post
+published: true
+meta:
+  _su_rich_snippet_type: none
+  _su_description: CAKEPHP:エラー・例外発生時メール送信
+  _su_title: CAKEPHP:エラー・例外発生時メール送信
+  _syntaxhighlighter_encoded: '1'
+  _edit_last: '1'
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>PHP 4.0.1 からset_error_handler関数で、ユーザーが定義したエラーハンドラを設定できるようになりました：</p>
+<p><em>mixed set_error_handler ( callable $error_handler [, int $error_types = E_ALL | E_STRICT ] )</em></p>
+<p>PHP 5.0 からは例外もエラーハンドラを設定できるようになりました：</p>
+<p><em>callable set_exception_handler ( callable $exception_handler )</em></p>
+<p>今回はcakephp (2.0以降)のデフォルトのエラー・例外ハンドラを設定しましょう。</p>
+<p><strong>エラー</strong></p>
+<p>[php]&lt;/pre&gt;<br />
+//app/Config/core.php<br />
+ Configure::write('Error.handler', 'AppError::handleError');</p>
+<p>//app/Config/bootstrap.php<br />
+ App::uses('AppError', 'Lib');</p>
+<p>//app/Lib/AppError.php<br />
+ class AppError {<br />
+ public static function handleError($code, $description, $file = null, $line = null, $context = null) {<br />
+ echo 'エラーが発生しましたよ。';<br />
+ mail(&quot;myemail@email.com&quot;, 'エラー発生', $description . &quot;line:&quot; . $line)</p>
+<p>}<br />
+ }</p>
+<p>[/php]</p>
+<p>説明が要らないほど分かりやすいかと思いますが、core.phpでエラーハンドラを有効化し、boostrapでcakePHPのAppErrorライブラリーをインポートします。最後はライブラリーを書き直します。</p>
+<p><strong>例外</strong></p>
+<p>[php]</p>
+<p>// dans app/Config/core.php<br />
+Configure::write('Exception.handler', 'AppExceptionHandler::handle');</p>
+<p>// dans app/Config/bootstrap.php<br />
+App::uses('AppExceptionHandler', 'Lib');</p>
+<p>// dans app/Lib/AppExceptionHandler.php<br />
+class AppExceptionHandler {<br />
+ public static function handle($error) {<br />
+ echo 'Oh noes! ' . $error-&gt;getMessage();<br />
+ mail(&quot;myemail@email.com&quot;, 'エラー発生', $error-&gt;getMessage());<br />
+ }<br />
+ // ...<br />
+}</p>
+<p>[/php]</p>
+<p>エラー同様に修正します。</p>

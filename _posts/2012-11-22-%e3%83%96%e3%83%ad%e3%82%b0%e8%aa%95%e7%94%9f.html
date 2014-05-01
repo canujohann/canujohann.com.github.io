@@ -1,0 +1,132 @@
+---
+layout: post
+title: jsonをjava beanに変換
+categories:
+- Java
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>Jsonをjava beanに変換してくれるライブラリが数え切れないほど沢山ありますが、本日はグーグルに開発されたgsonライブラリーを紹介させていただきます。</p>
+<p>まずはjsonデータを取得し、string型にします。その次はgsonライブラリでjava beanを生成します。一つ目の引数はjsonソース(string)、二つ目は戻り型のクラスです。</p>
+<pre>
+import com.google.gson.Gson;
+...
+
+
+String siteJson = "{"data1":100,"data2":"hello","list":["String 1","String 2","String 3"]}";                       
+
+
+//beanオブジェクト生成
+yourBean bean = new Gson().fromJson(siteJson, yourBean.class);  
+</pre>
+<p>※ jsonの中にdate型の変数が入ってる場合はstring型に変えて下さい。なぜなら、ライブラリがdate型に対応しないようです。 </p>
+<p>データ重複を避けるために、ＤRY原則に従って、柔軟なシステムを構築しましょう。上に記述したコードを利用して、抽象クラスを作成します。<br />
+引数１：元のJson文字列<br />
+引数２：Jsonから抽出したい文字列<br />
+引数３：beanフクラス</p>
+<pre>
+public static baseBean parse(String jString, String toExtract, Class myClass)  {
+
+
+        Bean bean = null;
+        
+        try {
+                
+                //Beanの子クラスをインスタンス
+                bean = (Bean) Class.forName (myClass.getName()).newInstance ();
+                
+                //JSONオブジェクト化
+                JSONObject jObject = new JSONObject(jString);
+
+
+                //抽出したい文字列                
+                JSONObject SiteObject = jObject.getJSONObject(toExtract);
+                //文字列化
+                String siteJson = SiteObject.toString();
+                
+                //データParse
+                domain = new Gson().fromJson(siteJson, myClass);                        
+
+
+        //Class.forNameの利用のため、必要なcatch処理を追加
+        } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+        } catch (InstantiationException e1) {
+                e1.printStackTrace();
+        } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+        }finally{
+                return bean;
+        }
+}
+</pre>
+<p>beanファイルの親クラスをお作ります。</p>
+<pre>
+public class baseBean {
+                
+        /**
+         * constructor
+         */
+        public void DomainDao(){}
+</pre>
+<p>Beanクラス(子クラス)</p>
+<pre>
+public Bean1 extends baseBean {
+        private int id;
+
+        public int getId() {
+                return id;
+        }
+        public void setId(int id) {
+                this.id = id;
+        }
+
+
+}
+
+
+public Bean2 extends baseBean {
+        private int name;
+
+        public int getName() {
+                return name;
+        }
+
+        public void setName(String name) {
+                this.name = name;
+        }
+
+
+}
+</pre>
+<p>関数の呼び出しは下記の通りとなります。</p>
+<pre>
+public Bean1 selectBean1 () throws Exception{                
+        String json = ...;        //JSONデータアクセス                
+        
+        //jsonの【site】情報を取得し、Beanファイルに代入
+        return (Bean1) parse(json, "site", Bean1.class);
+        
+}
+
+public Bean2 selectBean2 () throws Exception{                
+        String json = ...;        //JSONデータアクセス                
+        
+        //jsonの【site】情報を取得し、Beanファイルに代入
+        return (Bean2) parse(json, "myParam", Bean2.class);
+        
+}
+</pre>
+<p>誰かの役にたてれば、幸いです。</p>
+<p><em>By johann</em></p>

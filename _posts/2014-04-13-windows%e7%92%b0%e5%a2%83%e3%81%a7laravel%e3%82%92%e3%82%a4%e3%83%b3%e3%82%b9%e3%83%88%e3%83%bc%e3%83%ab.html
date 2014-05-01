@@ -1,0 +1,71 @@
+---
+layout: post
+title: Windows環境でLaravel
+categories:
+- PHP
+tags:
+- composer
+- laravel
+- php
+- xampp
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _su_rich_snippet_type: none
+  _su_title: windows環境でlaravelアプリの初期設定を行いましょう！
+  _su_description: windows環境でlaravelアプリの初期設定を行いましょう！
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://blog.canujohann.com/wp-content/uploads/2014/04/laravel-l-slant.png"><img class="size-medium wp-image-2163 aligncenter" alt="laravel-l-slant" src="http://blog.canujohann.com/wp-content/uploads/2014/04/laravel-l-slant-300x205.png" width="300" height="205" /></a></p>
+<p>windows環境でLaravelフレームワークをインストールしましょう！まずは環境設定を行います。今回は3つのプログラムを使います：</p>
+<table>
+<tbody>
+<tr>
+<th>ツール名</th>
+<th>ダウンロードURL</th>
+</tr>
+<tr>
+<td>XAMPP</td>
+<td><a title="xamppダウンロード" href="https://www.apachefriends.org/jp/index.html" target="_blank">https://www.apachefriends.org/jp/index.html</a></td>
+</tr>
+<tr>
+<td>GIT</td>
+<td><a title="gitダウンロード" href="http://msysgit.github.io/" target="_blank">http://msysgit.github.io/</a></td>
+</tr>
+<tr>
+<td>Composer</td>
+<td><a title="php composer インストール" href="https://getcomposer.org/doc/00-intro.md#installation-windows" target="_blank">https://getcomposer.org/doc/00-intro.md#installation-windows</a></td>
+</tr>
+</tbody>
+</table>
+<p>上記プログラムのインストールが終わりましたら・・</p>
+<p>1- GITでxamppのhtdocs直下でlaravelの最新版を落とします</p>
+<pre>cd C:\xampp\htdocs
+git clone git@github.com:laravel/laravel.git laraveldev</pre>
+<blockquote><p>C:\xampp\htdocs\laraveldev　フォルダーが作られました！</p></blockquote>
+<p>2- composerで必要なライブラリーをダウンロード</p>
+<pre>cd laraveldev
+composer install</pre>
+<p>3- hostsファイルを編集　（C:\windows\system32\drivers\etc\hosts）</p>
+<pre>//この一行を追加
+127.0.0.1             www.laravel.dev</pre>
+<p>4- VirtualHostの設定 (c:\xampp\apache\conf\extra\httpd-vhosts.conf)</p>
+<pre>    DocumentRoot "C:/xampp/htdocs/laraveldev/public"
+    ServerName www.laravel.dev
+    ServerAlias www.laravel.dev
+    ErrorLog "logs/laravel.log"
+    CustomLog "logs/custom.laravel.log" combined
+    &lt;Directory "C:/xampp/htdocs/laraveldev/public"&gt;
+        AllowOverride All
+        Order Allow,Deny
+        Allow from all
+        Require all granted</pre>
+<p>5- XAMPPでapacheを再起動</p>
+<p>"http://www.laravel.dev/"をアクセスすると、新しいlarabelアプリが表示されます！おめでとうございます～</p>

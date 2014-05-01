@@ -1,0 +1,74 @@
+---
+layout: post
+title: クリスマスまであと13日！
+categories:
+- linux
+tags:
+- shell
+- snow linux
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _edit_last: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>12月ということで面白いbashスクリプト(linux)を紹介したいと思います。何の役にも立たないが、ギークの皆さんが喜ぶんじゃないかと思います。</p>
+<p>①まずはファイルを作成します。</p>
+<pre>vi snowFile.sh</pre>
+<p>②そして下記コードをコピーします</p>
+<pre>#!/bin/bash
+
+LINES=$(tput lines)
+COLUMNS=$(tput cols)
+
+declare -A snowflakes
+declare -A lastflakes
+
+clear
+
+function move_flake() {
+i="$1"
+
+if [ "${snowflakes[$i]}" = "" ] || [ "${snowflakes[$i]}" = "$LINES" ]; then
+snowflakes[$i]=0
+else
+if [ "${lastflakes[$i]}" != "" ]; then
+printf "33[%s;%sH 33[1;1H " ${lastflakes[$i]} $i
+fi
+fi
+
+printf "33[%s;%sHâ
+33[1;1H" ${snowflakes[$i]} $i
+
+lastflakes[$i]=${snowflakes[$i]}
+snowflakes[$i]=$((${snowflakes[$i]}+1))
+}
+
+while :
+do
+i=$(($RANDOM % $COLUMNS))
+
+move_flake $i
+
+for x in "${!lastflakes[@]}"
+do
+move_flake "$x"
+done
+
+sleep 0.1
+done</pre>
+<p>③実行権限を与えます</p>
+<pre>chmod +x snowFile.sh</pre>
+<p>④実行します！</p>
+<pre>./snowFile.sh</pre>
+<p>すると・・・なんと・・・雪が降ってくる！！友達に自慢してね～</p>
+<p><a href="http://japanesegeek.wordpress.com/2012/12/12/1840/neige/" rel="attachment wp-att-1841"><img class="alignnone size-medium wp-image-1841" alt="粉雪" src="http://japanesegeek.files.wordpress.com/2012/12/neige.jpg?w=300" width="300" height="175" /></a></p>
+<p>by johann</p>

@@ -1,0 +1,70 @@
+---
+layout: post
+title: FTPサーバー設定
+categories:
+- FTP
+tags:
+- ftp
+status: publish
+type: post
+published: true
+meta:
+  _su_description: ''
+  _publicize_pending: '1'
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>今日はLinux環境で<strong>FTPサーバー</strong>を立てて、専用のユーザーを追加してみましょう。<br />
+<em>(OS：centos 5.6)</em></p>
+<p>UNIX系システム向けの一番有名な<strong>オープンソース</strong>のFTPサーバ【<strong>vsfptd</strong>】を使います。</p>
+<p><em>注意：ＦＴＰサーバーを設定する前にftpポートを解放しておいてください(20,21)</em></p>
+<p>インストールされていない場合はインストールします：</p>
+<pre>#インストール状態を確認
+yum list installed | grep vsftpd
+
+#インストールされていない場合...
+ yum -y install vsftpd</pre>
+<p>次は<strong>設定ファイル</strong>をカスタマイズします：</p>
+<pre>vi /etc/vsftpd/vsftpd.conf
+
+#匿名ログイン＝禁止
+anonymous_enable=NO
+
+# アスキーモードのアップダウンロードを許可
+ascii_upload_enable=YES
+ascii_download_enable=YES
+
+# バージョン情報が表示されないように
+ftpd_banner=Welcome to xxx FTP service.
+
+# ホームディレクトリより上のディレクトリアクセスを禁止
+chroot_local_user=YES
+chroot_list_enable=YES
+chroot_list_file=　/etc/vsftpd/chroot_list
+
+# ディレクトリごと削除を許可
+ls_recurse_enable=YES
+
+# /etc/vsftpd/user_listのユーザのみアクセス許可
+userlist_enable=YES
+userlist_deny=NO
+
+# ユーザごとの設定ファイルを有効にする
+user_config_dir=/etc/vsftpd/vsftpd_user_conf</pre>
+<p>ユーザーを追加します。bashログインできないように -s (shell) 引数を指定し<strong> /sbin/nologin</strong>値を与えます。　ユーザーのhomeとしてはapacheのdocumentRoot下のディレクトリーを指定します（-d）。最後にパスワードを変えます。</p>
+<pre>adduser -d /var/www/html/your_directory -s /sbin/nologin  ftp_user1
+passwd ftp_user1
+...</pre>
+<p>etc/vsftpd/user_listに【ftp_user_1を】ユーザーを追加します。</p>
+<pre>#念の為、バックアップ
+cp /etc/vsftpd/user_list /etc/vsftpd/user_list.BACKUP
+echo ftp_guest_1 &gt;  /etc/vsftpd/user_list</pre>
+<p>サーバーを起動させて、serviceとして登録します</p>
+<pre> /etc/init.d/vsftpd start
+ chkconfig vsftpd on</pre>
+<p>以上です～</p>
+<p>by johann</p>

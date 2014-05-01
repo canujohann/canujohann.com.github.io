@@ -1,0 +1,31 @@
+---
+layout: post
+title: cowsayでunixコマンドの説明
+categories:
+- linux
+tags:
+- cowsay
+status: publish
+type: post
+published: true
+meta:
+  _su_title: cowsay
+  _wp_old_slug: unix%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%81%ae%e8%aa%ac%e6%98%8e
+  _su_rich_snippet_type: none
+  _su_description: cowsayでunixコマンドを表示
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>まいど！</p>
+<p>今日はターミナルを起動する度にランダムでunixコマンドの説明を表示してみましょう。</p>
+<p>まずはcowsayをインストールします（ubuntu環境）</p>
+<p>[html] sudo apt-get install cowsay [/html]</p>
+<p>そして.bashrcに追加します</p>
+<p>[html] cowsay -f $(ls /usr/share/cowsay/cows | shuf -n 1 | cut -d. -f1) $(whatis $(ls /bin) 2&gt;/dev/null | shuf -n 1) &gt;&gt; ~/.bashrc [/html]</p>
+<p>[caption id="attachment_2097" align="aligncenter" width="300"]<a href="http://blog.canujohann.com/wp-content/uploads/2013/08/oSyyX.png"><img class="size-medium wp-image-2097" alt="cowsay" src="http://blog.canujohann.com/wp-content/uploads/2013/08/oSyyX-300x182.png" width="300" height="182" /></a> <span style="font-size: 13px; line-height: 19px;">Voila !</span>[/caption]</p>

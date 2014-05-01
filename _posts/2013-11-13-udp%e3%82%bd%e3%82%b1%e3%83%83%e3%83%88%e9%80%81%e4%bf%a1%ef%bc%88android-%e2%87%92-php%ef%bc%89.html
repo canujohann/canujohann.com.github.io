@@ -1,0 +1,143 @@
+---
+layout: post
+title: UDPソケット送信（android ⇒ PHP）
+categories:
+- android
+- PHP
+tags:
+- android
+- java
+- php
+- udp
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _su_title: UDPソケット送信（android ⇒ PHP）
+  _syntaxhighlighter_encoded: '1'
+  _su_description: UDPソケット送信（android ⇒ PHP）
+  _su_rich_snippet_type: none
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>今日はandroidからUDPソケットを利用して、外部のPHPシステムにデータを送ってみましょう。</p>
+<p>まずはandroid側の実装を行います。android 3.0以降の場合は外部との接続の際に必ず別threadを用意しなければなりませんので、 Runnableを作ってみましょう！</p>
+<p>[java]</p>
+<p>new Thread(new Runnable() {</p>
+<p>public void run() {</p>
+<p>try {</p>
+<p>//送信したい情報<br />
+ String messageStr=&quot;I want to send this message via UDP!&quot;;<br />
+ int msg_length=messageStr.length();<br />
+ byte[] message = messageStr.getBytes();</p>
+<p>//リモートサーバー情報<br />
+ int server_port = 9999;<br />
+ InetAddress local = InetAddress.getByName(&quot;127.0.0.1&quot;);</p>
+<p> //UDPソケット<br />
+ DatagramSocket s = new DatagramSocket();<br />
+ DatagramPacket p = new DatagramPacket(message, msg_length,local,server_port);<br />
+ s.send(p); //ソケット送信</p>
+<p> } catch (UnknownHostException e) {<br />
+ //ホストが存在しないようです<br />
+ e.printStackTrace();<br />
+ } catch (SocketException e){<br />
+ //ソケットのエラーが発生<br />
+ e.printStackTrace();<br />
+ } catch (IOException e){<br />
+ //sendメッソードがうまくいかなかったようです<br />
+ e.printStackTrace();<br />
+ } catch (Exception e){<br />
+ //その他の例外<br />
+ e.printStackTrace();<br />
+ }</p>
+<p>}</p>
+<p>}).start();</p>
+<p>}</p>
+<p>[/java]</p>
+<p>manifestフィルにINTERNETパーミッションを追加します</p>
+<p>[xml]</p>
+<p>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;</p>
+<p>[/xml]</p>
+<p>クライアント側の開発はOKです！</p>
+<p>次はサーバー側を作ってみます。POOなので、読みやすいだと・・思いたいです。コメントたっぷり入ってますので、ご確認ください。</p>
+<p>[php]</p>
+<p>Class SocketRealTime {</p>
+<p>private $sock ; //ソケット自体<br />
+private static $singleton ; //singleton</p>
+<p>private $domain ; //ドメイン<br />
+private $port ; //ポート<br />
+private $is_running = false;</p>
+<p>private $connection ;</p>
+<p>//constructorなし<br />
+private function __construct(){}</p>
+<p>//singleton取得<br />
+public static function getInstance(){<br />
+ if (self::$singleton == null){<br />
+   self::$singleton = new self;<br />
+ }<br />
+ return self::$singleton ;<br />
+}</p>
+<p>//サーバーを起動させる<br />
+public function launch_udp_server($domain, $port){</p>
+<p>if (!$this-&gt;is_running){</p>
+<p> //フラッグ更新<br />
+ $this-&gt;is_running = true ;</p>
+<p> //情報更新<br />
+ $this-&gt;domain = $domain;<br />
+ $this-&gt;port = $port;</p>
+<p> //ソケット起動<br />
+ $this-&gt;socket_creation();<br />
+ $this-&gt;socket_bind();<br />
+ $this-&gt;launch_loop();</p>
+<p>}else{<br />
+ echo &quot;UDPサーバーは既に起動しています。&quot;;<br />
+ }<br />
+}</p>
+<p> //ソケット生成<br />
+ private function socket_creation(){<br />
+ if(!($this-&gt;sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP))){<br />
+  $errorcode = socket_last_error();<br />
+  $errormsg = socket_strerror($errorcode);<br />
+  die(&quot;Couldn't create socket: [$errorcode] $errormsg \n&quot;);<br />
+ }<br />
+ echo &quot;Socket created \n&quot;;<br />
+ }</p>
+<p> //ソケットをバインド<br />
+ private function socket_bind(){<br />
+ if( !socket_bind($this-&gt;sock, $this-&gt;domain , $this-&gt;port ) ){<br />
+  $errorcode = socket_last_error();<br />
+  $errormsg = socket_strerror($errorcode);<br />
+  die(&quot;Could not bind socket : [$errorcode] $errormsg \n&quot;);<br />
+ }<br />
+ echo &quot;Socket bind OK \n&quot;;<br />
+}</p>
+<p> //無限ループ<br />
+ private function launch_loop(){<br />
+ while(1){<br />
+  $r = socket_recvfrom($this-&gt;sock, $buf, 512, 0, $remote_ip, $remote_port);<br />
+  $this-&gt;update($buf);<br />
+ }<br />
+ socket_close($sock);<br />
+ }</p>
+<p> //データの処理<br />
+ private function update($data){<br />
+  //ここで処理を行います<br />
+ }</p>
+<p>}</p>
+<p>[/php]</p>
+<p>オブジェクトをインスタンス化します：</p>
+<p>[php]</p>
+<p>$obj = SocketRealTime::getInstance();<br />
+$obj-&gt;launch_udp_server(&quot;127.0.0.1&quot;, 9999);</p>
+<p>[/php]</p>
+<p>最後にサーバーを起動させます</p>
+<p>[xml]</p>
+<p>php myscript.php</p>
+<p>[/xml]</p>
+<p>以上になりますが、質問のある方はコメントでお願いします。</p>
+<p>GITHUB  <a href="https://github.com/canujohann/Java-PHP-UDP/">https://github.com/canujohann/Java-PHP-UDP/</a></p>

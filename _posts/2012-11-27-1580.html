@@ -1,0 +1,37 @@
+---
+layout: post
+title: SSH接続を監視
+categories:
+- linux
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p>SSH接続を監視するために、メールの自動送信を設定します。</p>
+<p>SSHログインの際に、下記ファイルが読み込まれる：</p>
+<ul>
+<li>/etc/profile</li>
+<li>各自の.bash_profile(/home/user/下)</li>
+<li>.bash_profileがなければ ~/.bash_login</li>
+<li>.bash_loginがなければ ~/.profile</li>
+</ul>
+<p>全員の動きを監視したいので、/etc/profileにメール送信処理を足します。</p>
+<pre>[user@localhost]$ su -
+[root@localhost]#  echo "`whoami` just logged(my.xx.xxxx.ip)" | mail -s "`hostname` security alert" me@myserver.com  &gt;&gt; /etc/profile</pre>
+<ul>
+<li>whoiamコマンドでユーザー名を取得して、echoで出力します。</li>
+<li>パイプで出力された文字をメールで送信します。</li>
+<li>最後はこのコマンドを　/etc/profileの一番下にリダイレクトします。</li>
+</ul>
+<p>以上！</p>
+<p>by johann</p>

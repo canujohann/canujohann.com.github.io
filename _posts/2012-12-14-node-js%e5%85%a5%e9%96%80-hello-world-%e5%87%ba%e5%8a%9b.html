@@ -1,0 +1,44 @@
+---
+layout: post
+title: 'Node.js入門: hello world 出力'
+categories:
+- javascript
+tags:
+- javascript
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _edit_last: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://japanesegeek.wordpress.com/2012/12/14/node-js%e5%85%a5%e9%96%80-hello-world-%e5%87%ba%e5%8a%9b/nodejs/" rel="attachment wp-att-1873"><img class="alignnone size-full wp-image-1873" alt="nodejs" src="http://japanesegeek.files.wordpress.com/2012/12/nodejs.png" width="420" height="111" /></a></p>
+<p><a title="node.js wiki" href="http://ja.wikipedia.org/wiki/Node.js" target="_blank">Wiki</a>から</p>
+<blockquote><p>Node.js はイベント化された入出力を扱うUnix系プラットフォーム上のサーバーサイドJavaScript環境である（V8 JavaScriptエンジンで動作する）。Webサーバなどのスケーラブルなネットワークプログラムの記述を意図している。</p></blockquote>
+<p>☆☆<a title="node.js　インストール手順" href="http://nodejs.org/" target="_blank">インストール手順はコチラ</a>☆☆</p>
+<p>まずは　httpライブラリーを変数に入れます。</p>
+<pre>var http = require('http');</pre>
+<p>httpの<strong>createServer</strong>メッソードを読んで、パラメターとして<strong>匿名変数</strong>を入れておきます。</p>
+<p>この変数の中に<strong>res</strong>(レスポンス)パラメターの<strong>writeHead</strong>メッソード(ヘッダー設定)と<strong>end</strong>メッソード(コンテンツ+出力)を呼びます。</p>
+<p>最後にhttpオブジェクトの<strong>listen</strong>メッソードで<strong>ポート</strong>を設定しました(1337)；</p>
+<pre>http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello Worldn');
+}).listen(1337, '127.0.0.1');</pre>
+<p>フールソースコード（index.js）</p>
+<pre>var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello Worldn');
+}).listen(1337, '127.0.0.1');</pre>
+<p>nodeで実行する:</p>
+<pre>node index.js</pre>
+<p>ブラウザでアクセスしてみます！　<a title="hello world" href="http://127.0.0.1/1337" target="_blank">http://127.0.0.1/1337</a></p>
+<p>By johann</p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: centos環境でlighttpdを設定 ！
+categories:
+- サーバ
+tags:
+- lighttpd
+- 軽いサーバー
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _su_description: ''
+author:
+  login: admin
+  email: canu.johann@gmail.com
+  display_name: admin
+  first_name: ''
+  last_name: ''
+---
+<p><a href="http://japanesegeek.files.wordpress.com/2013/02/ll.jpg"><img class="size-full wp-image-1993 aligncenter" alt="lighttpd" src="http://japanesegeek.files.wordpress.com/2013/02/ll.jpg" width="192" height="184" /></a></p>
+<p><strong>lighttpdについて</strong></p>
+<p>lighttpdは<strong>軽量</strong>かつ<strong>高速性</strong>を重視して設計された比較的新しいWebサーバーソフトウエアです。BSDライセンスで公開されているオープンソースソフトウエアで、<strong>無料で利用することができます</strong>。画像や映像などといった<strong>静的コンテンツの配信に使われることが多い</strong>ようです。</p>
+<p><strong>導入手順</strong></p>
+<p>Centos 5.* 6.*　バージョンのリポジトリを確認してみると、どうやらlighttpdのパケージが存在していないようですね。</p>
+<pre>#パケージが存在しているかチェック
+yum list available 'lighttpd'</pre>
+<p>対策として<strong>repoforge</strong>という<strong>サードパーティ製のRPMパッケージ群のリポジトリ</strong>をインストールします。アーキテクチャによってrpmファイルが変わってくるので、x86_64とx86の手順を作っておきました。</p>
+<pre>#アーキテクチャチェック
+uname -a
+
+#rmpダウンロード(アーキテクチャx86_64の場合)
+wget http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.x86_64.rpm
+
+#rmpダウンロード(アーキテクチャx86の場合)
+wget http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.i386.rpm  
+
+//GPG key をインポート
+rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
+
+//パッケージをインストール
+rpm -i rpmforge-release-0.5.2-2.el5.rf.*.rpm</pre>
+<p>次はlighttpをインストールしましょう！</p>
+<pre>yum install lighttpd</pre>
+<p>設定ファイルで初期設定を行います。</p>
+<pre>vi /etc/lighttpd/lighttpd.conf
+         .....
+	server.port = 54331	#ポート番号
+	server.document-root = server_root + "/lighttpd/mydoc"	#documentRoot</pre>
+<p>設定ファイルが有効になっているかチェック:</p>
+<pre>lighttpd -t -f /etc/lighttpd/lighttpd.conf</pre>
+<p>問題がなければ、テストモードで起動させます:</p>
+<pre>lighttpd -D -f lighttpd.conf</pre>
+<p>http://localhost:54331 (指定ポート)をアクセスすると【/lighttpd/mydoc】のファイルが正常に表示されます！</p>
+<p>以上</p>
+<p>by johann</p>
