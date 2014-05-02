@@ -21,9 +21,9 @@ author:
   last_name: ''
 ---
 <p>androidアプリの提供元を調べるために、PackageManagerのgetInstallerPackageNameを使えます</p>
-<p>[java]<br />
+<pre>
 PackageManager pm = getPackageManager();<br />
-String installationSource = pm.getInstallerPackageName(getPackageName());</p>
+String installationSource = pm.getInstallerPackageName(getPackageName());
 <p>String source ;</p>
 <p>if(installationSource.equals(&quot;com.android.vending&quot;)){<br />
  source= &quot;google play&quot;;<br />
@@ -33,7 +33,7 @@ String installationSource = pm.getInstallerPackageName(getPackageName());</p>
  source= &quot;その他のマーケット&quot;;<br />
 }</p>
 <p>Log.d(&quot;DEBUG&quot;, source + &quot;からインストールされましたね。&quot;);<br />
-[/java]</p>
+</pre>
 <p>installationSourceの値は【com.android.vending】でしたら、google playからインストールされたってことです！</p>
 <p>以上！</p>
 <p>参考：<a title="androidの提供先を調べる" href="http://stackoverflow.com/questions/3178043/is-there-a-way-to-detect-if-app-was-installed-with-market-or-not" target="_blank">stackoverflow</a></p>

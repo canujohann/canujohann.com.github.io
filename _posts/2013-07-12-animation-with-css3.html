@@ -26,26 +26,32 @@ author:
 <p>まずはHTMLのソース：</p>
 <p>[html]&lt;span class=&quot;bar half-full&quot;&gt;&lt;/span&gt; [/html]</p>
 <p>CSS側はこんな感じにします：</p>
-<p>[css]</p>
-<p>/* バー*/<br />
-.bar {<br />
-	height:18px;<br />
-	width:300px;<br />
-	margin:2px 2px;<br />
-	border:solid 1px #b5b5b5;<br />
-}</p>
-<p>/*アニメーションクラス*/<br />
-.half-full {<br />
-	/*infinite (無限ループ)でアニメーションを繰り返す　*/<br />
-	-moz-animation:  half-full 5s ease-out 0 infinite normal;<br />
-	-webkit-animation: half-full 5s ease 0 infinite normal;<br />
-	background-color: #ff3e36;<br />
-}</p>
-<p>/* mozilla用 */<br />
-@-moz-keyframes half-full {0%  { width:0px;} 100%{ width:90%;}  }</p>
-<p>/* animation for webkit (chrome,...) */<br />
-@-webkit-keyframes half-full  { 0%  { width:0px;} 100%{ width:90%;}  }</p>
-<p>[/css]</p>
+
+<pre>
+
+* バー*/
+.bar {
+	height:18px;
+	width:300px;
+	margin:2px 2px;
+	border:solid 1px #b5b5b5;
+}
+
+/*アニメーションクラス*/
+.half-full {
+	/*infinite (無限ループ)でアニメーションを繰り返す　*/
+	-moz-animation:  half-full 5s ease-out 0 infinite normal;
+	-webkit-animation: half-full 5s ease 0 infinite normal;
+	background-color: #ff3e36;
+}
+
+/* mozilla用 */
+@-moz-keyframes half-full {0%  { width:0px;} 100%{ width:90%;}  }
+/* animation for webkit (chrome,...) */
+@-webkit-keyframes half-full  { 0%  { width:0px;} 100%{ width:90%;}  }
+</pre>
+
+
 <p>コメント通りですが、アニメーションを使ってバーを赤色で染めます（9割まで）。</p>
 <div class="bar half-full"> </div>
 <p>もちろん、IEは未対応です！</p>

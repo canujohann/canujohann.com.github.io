@@ -25,7 +25,13 @@ author:
 <p>まいど！</p>
 <p>今日はターミナルを起動する度にランダムでunixコマンドの説明を表示してみましょう。</p>
 <p>まずはcowsayをインストールします（ubuntu環境）</p>
-<p>[html] sudo apt-get install cowsay [/html]</p>
+
+<pre>
+sudo apt-get install cowsay 
+</pre>
+
 <p>そして.bashrcに追加します</p>
-<p>[html] cowsay -f $(ls /usr/share/cowsay/cows | shuf -n 1 | cut -d. -f1) $(whatis $(ls /bin) 2&gt;/dev/null | shuf -n 1) &gt;&gt; ~/.bashrc [/html]</p>
-<p>[caption id="attachment_2097" align="aligncenter" width="300"]<a href="http://blog.canujohann.com/wp-content/uploads/2013/08/oSyyX.png"><img class="size-medium wp-image-2097" alt="cowsay" src="http://blog.canujohann.com/wp-content/uploads/2013/08/oSyyX-300x182.png" width="300" height="182" /></a> <span style="font-size: 13px; line-height: 19px;">Voila !</span>[/caption]</p>
+
+<pre>
+cowsay -f $(ls /usr/share/cowsay/cows | shuf -n 1 | cut -d. -f1) $(whatis $(ls /bin) 2&gt;/dev/null | shuf -n 1) &gt;&gt; ~/.bashrc 
+</pre>

@@ -26,13 +26,19 @@ author:
 ---
 <p><a title="bootstrap" href="http://getbootstrap.com/2.3.2/" target="_blank">bootstrap</a>はLESSメタ言語で書かれてたフロントエンドフレームワークなので、そのままRoRプロジェクトに入れてしまうと、Less+Sassが共存し、管理はかなりめんどくさいです！　今日は<strong>bootstrapの【Sass】バージョン</strong>の（一つの）<strong>導入方法</strong>を紹介したいと思います～</p>
 <p>まずはgemfileを更新しましょう</p>
-<p>[html]gem 'sass-rails', '&gt;= 3.2'<br />
-gem 'bootstrap-sass', '~&gt; 2.3.2.2'[/html]</p>
+<pre>
+gem 'sass-rails', '&gt;= 3.2'<br />
+gem 'bootstrap-sass', '~&gt; 2.3.2.2'
+</pre>
+
 <p>んでgemFileを更新<br />
 [html]bundle install[/html]</p>
 <p>この時点でファイルがまだロードされていません！自動で生成されるapplication.css.scssに追加しましょう</p>
-<p>[css]@import &quot;bootstrap&quot;;<br />
-@import &quot;bootstrap-responsive&quot;;[/css]</p>
+<pre>
+@import &quot;bootstrap&quot;;<br />
+@import &quot;bootstrap-responsive&quot;;
+</pre>
+
 <p>注意点： <em>requireを使うと他のCSSシートからbootstrapを参照できるないしいから、必ずimportでやってください。</em></p>
 <p>完了です！bootstrapを使えます！</p>
 <p>参考：<a title="https://github.com/thomas-mcdonald/bootstrap-sass" href="https://github.com/thomas-mcdonald/bootstrap-sass" target="_blank">https://github.com/thomas-mcdonald/bootstrap-sass</a></p>
