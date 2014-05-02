@@ -1,23 +1,30 @@
 ---
 layout: page
-title: java, ruby, node, PHP ….
-tagline: ちょっとしたTips
+title: Welcome on my blog
+tagline: johann canu
 ---
 
 {% include JB/setup %}
 
 
-My HP [johann canu HP](http://canujohann.com)
+<div class="alert alert-success">
+ウエブ開発に関する知識を共有したいという気持ちでこのブログをスタートしました。
+メモ程度にまとめたブログですが、誰かのお役にたてれば幸いです ...
+</div>
 
 
 
-## 記事一覧
+
+<h2><i class="fa fa-calendar-o"></i> 記事一覧</h2>
 
 
-<ul class="posts">
+<dl class="dl-horizontal">
   {% for post in site.posts %}
-    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
+    <dt>{{ post.date | date_to_string }}</dt>
+    <dd><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></dd>
   {% endfor %}
-</ul>
+</dl>
+
+
 
 
