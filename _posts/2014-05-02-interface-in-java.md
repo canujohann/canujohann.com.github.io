@@ -7,11 +7,9 @@ tags: [java]
 ---
 {% include JB/setup %}
 
-# Interface (java)
-
 【javaのinterfaceって具体的にいつ使うんですか】と昨日新卒の方にきかれましたので、interfaceのよく見るパターンをまとめてみました。
 
-> 注意：初心者向けです！!
+<span class="alert">注意：初心者向けです！!</span>
 
 
 ###　定義
