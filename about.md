@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "About"
+title: "About me"
 description: "about"
 ---
 {% include JB/setup %}
@@ -20,6 +20,7 @@ description: "about"
 
 </ul>
 
+<br/>
 
 ## 自己紹介
 
