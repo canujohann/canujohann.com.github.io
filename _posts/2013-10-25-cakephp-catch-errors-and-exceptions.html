@@ -29,7 +29,7 @@ author:
 <p><em>callable set_exception_handler ( callable $exception_handler )</em></p>
 <p>今回はcakephp (2.0以降)のデフォルトのエラー・例外ハンドラを設定しましょう。</p>
 <p><strong>エラー</strong></p>
-<p>[php]&lt;/pre&gt;<br />
+<pre>
 //app/Config/core.php<br />
  Configure::write('Error.handler', 'AppError::handleError');</p>
 <p>//app/Config/bootstrap.php<br />
@@ -41,10 +41,11 @@ author:
  mail(&quot;myemail@email.com&quot;, 'エラー発生', $description . &quot;line:&quot; . $line)</p>
 <p>}<br />
  }</p>
-<p>[/php]</p>
+</pre>
+
 <p>説明が要らないほど分かりやすいかと思いますが、core.phpでエラーハンドラを有効化し、boostrapでcakePHPのAppErrorライブラリーをインポートします。最後はライブラリーを書き直します。</p>
 <p><strong>例外</strong></p>
-<p>[php]</p>
+<pre>
 <p>// dans app/Config/core.php<br />
 Configure::write('Exception.handler', 'AppExceptionHandler::handle');</p>
 <p>// dans app/Config/bootstrap.php<br />
@@ -57,5 +58,5 @@ class AppExceptionHandler {<br />
  }<br />
  // ...<br />
 }</p>
-<p>[/php]</p>
+</pre>
 <p>エラー同様に修正します。</p>

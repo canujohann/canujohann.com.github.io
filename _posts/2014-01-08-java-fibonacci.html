@@ -24,14 +24,14 @@ author:
   last_name: ''
 ---
 <p>javaで【フィボナッチ数】を実装してみました。0からnまでループを回すと簡単にできますが、recursiveメッソードでやってみましょう！</p>
-<p>[java]</p>
+<pre>
 <p>public static Long fibonacci (int i){<br />
 if (i==0 || i==1) return (long)i;<br />
 return fibonacci(i-1) + fibonacci (i-2) ;<br />
  }</p>
-<p>[/java]</p>
+</pre>
 <p>問題ないですが・・・数字が大きければ、処理スピードが遅くなりますので、HashMapを追加しました。</p>
-<p>[java]</p>
+<pre>
 <p>public static HashMap&lt;Integer,Long&gt; val = new HashMap&lt;Integer,Long&gt;();</p>
 <p>public static Long fibonacci (int i){<br />
 if (i==0 || i==1) return (long)i;<br />
@@ -39,5 +39,5 @@ if (i==0 || i==1) return (long)i;<br />
      val.put(i,fibonacci(i-1) + fibonacci (i-2));<br />
      return val.get(i);<br />
  }</p>
-<p>[/java]</p>
+</pre>
 <p>以上！</pre>

@@ -27,7 +27,7 @@ author:
 ---
 <p>今日はandroidからUDPソケットを利用して、外部のPHPシステムにデータを送ってみましょう。</p>
 <p>まずはandroid側の実装を行います。android 3.0以降の場合は外部との接続の際に必ず別threadを用意しなければなりませんので、 Runnableを作ってみましょう！</p>
-<p>[java]</p>
+<pre>
 <p>new Thread(new Runnable() {</p>
 <p>public void run() {</p>
 <p>try {</p>
@@ -58,14 +58,15 @@ author:
 <p>}</p>
 <p>}).start();</p>
 <p>}</p>
-<p>[/java]</p>
+</pre>
+
 <p>manifestフィルにINTERNETパーミッションを追加します</p>
-<p>[xml]</p>
+<pre>
 <p>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;</p>
-<p>[/xml]</p>
+</pre>
 <p>クライアント側の開発はOKです！</p>
 <p>次はサーバー側を作ってみます。POOなので、読みやすいだと・・思いたいです。コメントたっぷり入ってますので、ご確認ください。</p>
-<p>[php]</p>
+<pre>
 <p>Class SocketRealTime {</p>
 <p>private $sock ; //ソケット自体<br />
 private static $singleton ; //singleton</p>
@@ -129,15 +130,15 @@ public function launch_udp_server($domain, $port){</p>
   //ここで処理を行います<br />
  }</p>
 <p>}</p>
-<p>[/php]</p>
+</pre>
 <p>オブジェクトをインスタンス化します：</p>
-<p>[php]</p>
+<pre>
 <p>$obj = SocketRealTime::getInstance();<br />
 $obj-&gt;launch_udp_server(&quot;127.0.0.1&quot;, 9999);</p>
-<p>[/php]</p>
+</pre>
 <p>最後にサーバーを起動させます</p>
-<p>[xml]</p>
+<pre>
 <p>php myscript.php</p>
-<p>[/xml]</p>
+</pre>
 <p>以上になりますが、質問のある方はコメントでお願いします。</p>
 <p>GITHUB  <a href="https://github.com/canujohann/Java-PHP-UDP/">https://github.com/canujohann/Java-PHP-UDP/</a></p>

@@ -24,7 +24,8 @@ author:
   last_name: ''
 ---
 <p>ヘルパークラスに下記メッソードを追加して　：</p>
-<p>[ruby]</p>
+
+<pre>
 <p>private<br />
 MOBILE_BROWSERS = [&quot;android&quot;, &quot;ipod&quot;, &quot;opera mini&quot;, &quot;blackberry&quot;, &quot;palm&quot;,&quot;hiptop&quot;,&quot;avantgo&quot;,&quot;plucker&quot;, &quot;xiino&quot;,&quot;blazer&quot;,&quot;elaine&quot;, &quot;windows ce; ppc;&quot;, &quot;windows ce; smartphone;&quot;,&quot;windows ce; iemobile&quot;, &quot;up.browser&quot;,&quot;up.link&quot;,&quot;mmp&quot;,&quot;symbian&quot;,&quot;smartphone&quot;, &quot;midp&quot;,&quot;wap&quot;,&quot;vodafone&quot;,&quot;o2&quot;,&quot;pocket&quot;,&quot;kindle&quot;, &quot;mobile&quot;,&quot;pda&quot;,&quot;psp&quot;,&quot;treo&quot;]</p>
 <p>def is_smartphone?<br />
@@ -34,7 +35,7 @@ return true if agent.match(m)<br />
 end<br />
 return false<br />
 end</p>
-<p>[/ruby]</p>
+</pre>
 <p>view側で</p>
 <p>[ruby]</p>
 <p>&lt;% if is_smartphone? %&gt;<br />
