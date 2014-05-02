@@ -1,15 +1,18 @@
 ---
 layout: post
 title: "Java : interfaces"
-description: "java interface"
+description: "java インタフェース"
 category: 
 tags: [java]
 ---
 {% include JB/setup %}
 
+<span class="alert alert-danger"><em>注意</em>：初心者向けです！!</span>
+<br/><br/>
+
 【javaのinterfaceって具体的にいつ使うんですか】と昨日新卒の方にきかれましたので、interfaceのよく見るパターンをまとめてみました。
 
-<span class="alert">注意：初心者向けです！!</span>
+
 
 
 ###　定義

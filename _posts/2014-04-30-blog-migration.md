@@ -10,4 +10,4 @@ tags: [jekyll]
 # Blog Migration
 
 ブログマイグレーションが完了になりました！ WordPressをやめ、
-Jekyll + Githubページで再サイトします！　
+Jekyll + Githubページで再スタートします！　
