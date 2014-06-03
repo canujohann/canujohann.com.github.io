@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Herokuのスリープ状態対策 （PHPアプリ）"
+title: "Herokuのスリープ状態対策"
 description: "Herokuのスリープ状態対策 （PHPアプリ）"
 category: 
-tags: [heroku,laravel,php]
+tags: [heroku,php]
 ---
 {% include JB/setup %}
 
