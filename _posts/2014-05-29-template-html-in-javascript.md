@@ -29,8 +29,6 @@ $("#mydiv").html(xx);
 
 今日はjqueryのプラグインとして自分で簡単なテンプレートエンジンを作ってみましょう！
 
-参照サイト:[http://blog.mach3.jp/2010/09/10/jquery-render-js.html](http://blog.mach3.jp/2010/09/10/jquery-render-js.html)
-
 先ずはテンプレートを扱うメッソードを作ります *jqueryのプラグインなので、extendsメッソードを利用*
 
 ```javascript
@@ -96,5 +94,9 @@ HTML
 ```html
 <div> id="Container"></div>
 ```
+
+## 参照サイト
+
+[http://goo.gl/7l8hvM](http://blog.mach3.jp/2010/09/10/jquery-render-js.html)
 
 以上！
