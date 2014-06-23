@@ -1,7 +1,9 @@
 ---
 layout: page
 title: "About me"
+header: "About me"
 description: "about"
+group: navigation
 ---
 {% include JB/setup %}
 
