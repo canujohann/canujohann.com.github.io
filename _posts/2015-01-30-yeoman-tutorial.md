@@ -7,6 +7,9 @@ tags: [apache,tomcat]
 ---
 {% include JB/setup %}
 
+Yeomanは、WebページやWebアプリケーションなどの制作を迅速にはじめることができ、制作中のいろいろな作業をサポートしてくれるツールセットです。
+インストールして、実際にプロジェクトを作ってみましょう。
+
 
 > インストール
 
@@ -34,7 +37,7 @@ yo webapp
 yo angular
 ```
 
-> サーバー起動
+> サーバー起動 (localhost:9000)
 
 ```
 #launch server (Gruntfile included in project)
